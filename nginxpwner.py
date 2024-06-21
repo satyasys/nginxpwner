@@ -9,19 +9,6 @@ from colorama import Fore
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-banner='''
- _   _  _____  _____  _   _ __   ________  _    _  _   _  _____ ______
-| \ | ||  __ \|_   _|| \ | |\ \ / /| ___ \| |  | || \ | ||  ___|| ___ \\
-|  \| || |  \/  | |  |  \| | \ V / | |_/ /| |  | ||  \| || |__  | |_/ /
-| . ` || | __   | |  | . ` | /   \ |  __/ | |/\| || . ` ||  __| |    /
-| |\  || |_\ \ _| |_ | |\  |/ /^\ \| |    \  /\  /| |\  || |___ | |\ \\
-\_| \_/ \____/ \___/ \_| \_/\/   \/\_|     \/  \/ \_| \_/\____/ \_| \_|
-
-            A common vulnerability scanner for Nginx
-                      Author @stark0de1'''
-
-print(Fore.BLUE+banner)
-
 if len(sys.argv) != 3:
     print(f"{Fore.WHITE}Usage: python3 nginxpwner.py https://example.com filewithexistingfolderpaths")
     sys.exit()
@@ -29,7 +16,8 @@ if sys.argv[1].endswith("/"):
     print(f"{Fore.WHITE}[?] Please provide the URL without the last slash")
     sys.exit()
 
-url = sys.argv[1]
+url = "https://"+sys.argv[1]
+httpurl = sys.argv[1]
 existingfolderpathlist = sys.argv[2] 
 
 
@@ -55,7 +43,7 @@ else:
     print(f"{Fore.GREEN}[+] NGINX version is up to date")
 print(f"{Fore.BLUE}[?] If the tool reveals the nginx.conf file this is probably because there is no root directive in the nginx.conf file. Get the contents of the file and use https://github.com/yandex/gixy to find more misconfigurations")
 print(f"{Fore.WHITE}\n\n")
-os.system(f"gobuster dir -k --url '{url}' -w ./nginx.txt --wildcard --random-agent")
+os.system(f"C:\\security-testing\\exes\\gobuster.exe dir -k --url  {httpurl} -w ./nginx.txt --random-agent")
 print("\n")
 uri_crlf_test= requests.get(url+"/%0d%0aDetectify:%20clrf", verify=False)
 if "Detectify" in uri_crlf_test.headers:
@@ -199,7 +187,7 @@ print(f"{Fore.BLUE}[?] Executing Kyubi to check for path traversal vulnerabiliti
 pathlist = open(existingfolderpathlist, "r")
 pathlines = pathlist.readlines()
 for pathline in pathlines:
-    os.system(f"kyubi '{url}/{pathline.strip()}'")
+    os.system(f"/c/security-testing/Kyubi/Scripts/kyubi.exe '{url}/{pathline.strip()}'")
 pathlist.close()
 
 pathlist2 = open(existingfolderpathlist, "r")
